@@ -1,5 +1,6 @@
 package io.jenkins.plugins.secone.security;
 
+import io.github.pixee.security.BoundedLineReader;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
@@ -538,7 +539,7 @@ public class SecOneScannerPlugin extends Builder implements SimpleBuildStep {
 			String line;
 			boolean inRemoteSection = false;
 
-			while ((line = reader.readLine()) != null) {
+			while ((line = BoundedLineReader.readLine(reader, 5_000_000)) != null) {
 				if (line.trim().equals("[remote \"origin\"]")) {
 					inRemoteSection = true;
 				}
