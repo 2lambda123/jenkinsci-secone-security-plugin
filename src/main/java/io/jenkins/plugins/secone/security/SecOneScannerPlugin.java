@@ -1,6 +1,8 @@
 package io.jenkins.plugins.secone.security;
 
 import io.github.pixee.security.BoundedLineReader;
+import io.github.pixee.security.HostValidator;
+import io.github.pixee.security.Urls;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
@@ -464,7 +466,7 @@ public class SecOneScannerPlugin extends Builder implements SimpleBuildStep {
 	}
 
 	private String getSubUrl(String scmUrl) throws MalformedURLException {
-		URL apiUrl = new URL(scmUrl);
+		URL apiUrl = Urls.create(scmUrl, Urls.HTTP_PROTOCOLS, HostValidator.DENY_COMMON_INFRASTRUCTURE_TARGETS);
 
 		int subUrlLocation = StringUtils.indexOf(scmUrl, apiUrl.getHost()) + apiUrl.getHost().length() + 1;
 		if (apiUrl.getPort() != -1) {
